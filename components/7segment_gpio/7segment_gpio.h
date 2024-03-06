@@ -14,6 +14,7 @@
 
 #include "esphome.h"
 #include <functional>
+#include <vector>
 
 #ifdef USE_ESP32_FRAMEWORK_ARDUINO
 #include <esp32-hal-timer.h>
