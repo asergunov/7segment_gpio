@@ -67,7 +67,7 @@ display:
     - 8  # .
   colon_pin: 38
   degree_pin: 13 # degree mark on 
-  update_interval: 1s
+  update_interval: 100ms
   lambda: |-
       switch((millis()/3000) % 3) {
       case 0:
