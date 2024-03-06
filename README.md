@@ -8,9 +8,9 @@ This component let you connect 7-segment display directly to controller using ju
 Just list as many `digit_pins` as you have.
 
 ## Resistors on any segment or digit side
-Usually driver is turning on whole digit one by one so you need resistors on segment side to have the same brightness. 8 of them.
+Usually driver is turning on whole digit one by one so you need resistors for each segment pin to have the same brightness. So 8 of them.
 
-But if you have 2-4 digits you can put resistors on the digit side. To achieve the same brightness we have to turn on not whole digit, but the same segments on all digits at the time. To switch to this mode just set `iterate_digits` to `false`.
+But if you have 4 digits you can put resistors on the digit side. To achieve the same brightness we have to turn on not whole digit, but the same segments on all digits at the time. To switch to this mode just set `iterate_digits` to `false`.
 
 ## Degree mark
 Some displays have degree mark right before the last digit. So you can have `22.4°C` or `72.3°F` reading. Use `degree_pin` and `set_degree_on(bool)` function. Pin becomes `HIGH` when turned on. Just invert pin if you like to have it `LOW` when on.
