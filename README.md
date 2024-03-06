@@ -23,7 +23,9 @@ Common Anode means segment of a digit turning on by `HIGH` signal on digit and `
 
 This code has been written for common Anode display.
 
-Once your display is common Cathode display you can invert all the pins.
+Once your display is common Cathode display you can invert all the pins. 
+
+It will be nice to have a configuration argument, but it's in TODO list.
 
 # Usage Examples
 
