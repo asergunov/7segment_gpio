@@ -13,6 +13,7 @@
 #pragma once
 
 #include "esphome.h"
+#include <functional>
 
 #ifdef USE_ESP32_FRAMEWORK_ARDUINO
 #include <esp32-hal-timer.h>
