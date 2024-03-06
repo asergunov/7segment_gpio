@@ -15,7 +15,7 @@ But if you have 4 digits you can put resistors on the digit side. To achieve the
 ## Degree mark
 Some displays have degree mark right before the last digit. So you can have `22.4°C` or `72.3°F` reading. Use `degree_pin` and `set_degree_on(bool)` function. Pin becomes `HIGH` when turned on. Just invert pin if you like to have it `LOW` when on.
 
-## Colon for clock
+## Clock colon
 If display has `:` mark use `colon_pin` and `set_colon_on(bool)` function. Pin becomes `HIGH` when turned on. Just invert pin if you like to have it `LOW` when on.
 
 ## Common Anode or Cathode
