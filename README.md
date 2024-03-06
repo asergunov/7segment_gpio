@@ -39,7 +39,6 @@ This example of wiring 4 digit 7-segment common anode display to [S2 mini](https
 
 ```yaml
 external_components:
-  # shorthand
   source: github://asergunov/7segement_gpio
 
 time:
