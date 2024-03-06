@@ -56,15 +56,7 @@ display:
   id: lcd
   digit_pins: [1,2,6,4]
   iterate_digits: false
-  segment_pins:
-    - 21 # g
-    - 40 # f
-    - 14 # e
-    - 10 # d
-    - 36 # c
-    - 17 # b
-    - 34 # a
-    - 8  # .
+  segment_pins: [21, 40, 14, 10, 36, 17, 34, 8]
   colon_pin: 38
   degree_pin: 13 # degree mark on 
   update_interval: 100ms
