@@ -7,7 +7,7 @@ This component let you connect 7-segment display directly to controller using ju
 ## 1 to 8 digits support
 Just list as many `digit_pins` as you have.
 
-## Resistors on any segment or digit side
+## Resistors on segment or digit side
 Usually driver is turning on whole digit one by one so you need resistors for each segment pin to have the same brightness. So 8 of them.
 
 But if you have 4 digits you can put resistors on the digit side. To achieve the same brightness we have to turn on not whole digit, but the same segments on all digits at the time. To switch to this mode just set `iterate_digits` to `false`.
