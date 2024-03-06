@@ -30,7 +30,11 @@ It will be nice to have a configuration argument, but it's in TODO list.
 # Usage Examples
 
 ## Common Anode display 4 digits
-This example of wiring 4 digit 7-segment common anode display to [S2 mini](https://www.wemos.cc/en/latest/s2/s2_mini.html). 
+This example of wiring 4 digit 7-segment common anode display to [S2 mini](https://www.wemos.cc/en/latest/s2/s2_mini.html).
+
+### Segment reference
+![segments map](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/7_Segment_Display_with_Labeled_Segments.svg/150px-7_Segment_Display_with_Labeled_Segments.svg.png)
+
 ### Wiring
 * Display segment pins [`g`, `f`, `e`, `d`, `c`, `b`, `a`, `.`] connected directly to pins [21, 40, 14, 10, 36, 17, 34, 8]
 * Display digit pins connected via 220Ohm resistors to pins [1, 2, 6, 4]
