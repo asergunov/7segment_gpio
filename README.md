@@ -39,7 +39,7 @@ This example of wiring 4 digit 7-segment common anode display to [S2 mini](https
 * Display segment pins [`g`, `f`, `e`, `d`, `c`, `b`, `a`, `.`] connected directly to pins [21, 40, 14, 10, 36, 17, 34, 8]
 * Display digit pins connected via 220 Ohm resistors to pins [1, 2, 6, 4]
 * Display colon anode connected to pin 38
-* Display colon cathode connected to ground vai 200 Ohm resistor
+* Display colon cathode connected to ground vai 220 Ohm resistor
 * Display degree anode connected to pin 13
 * Display degree cathode connected to ground via 220 Ohm resistor
 
