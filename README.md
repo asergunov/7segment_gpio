@@ -3,7 +3,7 @@
 
 This component let you connect 7-segment display directly to controller using just some resistors.
 
-# Futures
+# Features
 ## 1 to 8 digits support
 Just list as many `digit_pins` as you have.
 
