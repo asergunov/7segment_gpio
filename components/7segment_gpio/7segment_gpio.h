@@ -12,7 +12,12 @@
 
 #pragma once
 
+#include "esphome/core/component.h"
+#include "esphome/core/hal.h"
+#include "esphome/core/helpers.h"
+#include "esphome/core/time.h"
 #include "esphome.h"
+
 #include <functional>
 #include <vector>
 
