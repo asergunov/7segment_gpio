@@ -1,5 +1,4 @@
-# 7segment_gpio
-7-segment GPIO display platform for esphome.
+# 7-segment GPIO display platform for esphome.
 
 This component let you connect 7-segment display directly to controller using just some resistors.
 
