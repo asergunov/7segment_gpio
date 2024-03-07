@@ -78,7 +78,8 @@ display:
         it.set_colon_on((millis()/500) % 2);
         break;
       default:
-        it.print("Unexpected to be here");
+        it.print("Er 1");
+        it.set_colon_on(true);
         break;
       }
 ```
