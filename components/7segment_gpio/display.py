@@ -43,7 +43,7 @@ CONFIG_SCHEMA = (
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
+    # await cg.register_component(var, config)
     await display.register_display(var, config)
 
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
