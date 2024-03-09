@@ -345,7 +345,7 @@ void LcdDigitsComponent::set_progress(float progress) {
   const uint8_t total_steps = 6*total_digits;
   const uint8_t current_step = total_steps*progress;
   const uint8_t current_digit = current_step/6;
-  const uint8_t current_segment = current_step%6;
+  const uint8_t current_segment = 1 + current_step%6;
   
   // off all digits
   for(auto* pin: interrupt_data_.digit_pins)
