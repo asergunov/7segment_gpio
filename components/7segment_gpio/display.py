@@ -4,7 +4,7 @@ from esphome.components import display
 from esphome.const import CONF_ID, CONF_INTENSITY, CONF_LAMBDA
 
 from esphome import pins
-
+from esphome.const import __version__ as ESPHOME_VERSION
 lcd_digits_ns = cg.esphome_ns.namespace("lcd_digits")
 LcdDigitsComponent = lcd_digits_ns.class_(
     "LcdDigitsComponent", cg.PollingComponent
@@ -43,7 +43,8 @@ CONFIG_SCHEMA = (
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    # await cg.register_component(var, config)
+    if cv.Version.parse(ESPHOME_VERSION) < cv.Version.parse("2023.12.0"):
+        await cg.register_component(var, config)
     await display.register_display(var, config)
 
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
