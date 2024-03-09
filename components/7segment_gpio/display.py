@@ -4,7 +4,7 @@ from esphome.components import display
 from esphome.const import CONF_ID, CONF_INTENSITY, CONF_LAMBDA
 
 from esphome import pins
-
+from esphome.const import __version__ as ESPHOME_VERSION
 lcd_digits_ns = cg.esphome_ns.namespace("lcd_digits")
 LcdDigitsComponent = lcd_digits_ns.class_(
     "LcdDigitsComponent", cg.PollingComponent
