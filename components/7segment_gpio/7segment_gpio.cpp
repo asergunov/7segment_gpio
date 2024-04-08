@@ -428,7 +428,7 @@ uint8_t LcdDigitsComponent::print(uint8_t start_pos, const char *in_str) {
         pos--;
       buffer[digits_count - pos - 1] |= 0b10000000;
     } else {
-      if (pos >= digits_count) {
+      if (pos > digits_count) {
         ESP_LOGE(TAG, "String '%s' is too long for the display!", in_str);
         break;
       }
