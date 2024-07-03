@@ -29,7 +29,7 @@ It will be nice to have a configuration argument, but it's in TODO list.
 # Usage Examples
 
 ## Common Anode display 4 digits
-This example of wiring 4 digit 7-segment common anode display to [S2 mini](https://www.wemos.cc/en/latest/s2/s2_mini.html).
+This example of wiring 4 digit 7-segment common anode display to [S2 mini](https://www.wemos.cc/en/latest/s2/s2_mini.html). This example will not work with original ESP32 becaues pins 34-39 are read-only there.
 
 ### Segment reference
 ![segments map](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/7_Segment_Display_with_Labeled_Segments.svg/150px-7_Segment_Display_with_Labeled_Segments.svg.png)
@@ -49,6 +49,11 @@ external_components:
 time:
 - platform: sntp
   id: sntp_time
+
+esp32:
+  board: esp32-s2-saola-1
+  framework:
+    type: arduino
 
 display:
 - platform: 7segment_gpio
