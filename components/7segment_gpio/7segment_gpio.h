@@ -39,7 +39,7 @@ struct LcdData {
 };
 
 struct LcdDigitsData : LcdData {
-  std::vector<GPIOPin *> digit_pins;
+  std::vector<GPIOPin *> digit_pins = {nullptr}; // by default it will expect one pin connected to power rail so don't need any actions from library side.
   std::vector<GPIOPin *> segment_pins;
   GPIOPin *colon_pin = nullptr;
   GPIOPin *degree_pin = nullptr;
