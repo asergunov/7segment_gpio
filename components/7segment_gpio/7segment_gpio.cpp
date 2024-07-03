@@ -201,7 +201,7 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
 
     // turn off digit
     if(auto digit_pin = digit_pins[current_frame])
-      digit_pin->digital_write(true);
+      digit_pin->digital_write(!common_vcc);
 
     // switch to hext digit
     current_frame = (current_frame + 1) % digit_pins.size();
@@ -211,13 +211,13 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
       const bool segment_on = raw_digit & 0x01;
       raw_digit >>= 1;
       bit_count += segment_on ? 1 : 0;
-      segment_pin->digital_write(segment_on);
+      segment_pin->digital_write(common_vcc^segment_on);
     }
 
     if(auto digit_pin = digit_pins[current_frame])
-      digit_pin->digital_write(false);
+      digit_pin->digital_write(common_vcc);
   } else {
-    segment_pins[current_frame]->digital_write(false);
+    segment_pins[current_frame]->digital_write(common_vcc);
 
     // switch to hext segment
     current_frame = (current_frame + 1) % segment_pins.size();
@@ -227,17 +227,17 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
       const bool digit_on = (*raw_digit) & (0x01 << current_frame);
       bit_count += digit_on ? 1 : 0;
       if(digit_pin)
-        digit_pin->digital_write(!digit_on);
+        digit_pin->digital_write(common_vcc^(!digit_on));
       raw_digit++;
     }
-    segment_pins[current_frame]->digital_write(true);
+    segment_pins[current_frame]->digital_write(!common_vcc);
   }
 
   if (colon_pin)
-    colon_pin->digital_write(colon_on && current_frame == 0);
+    colon_pin->digital_write(common_vcc^(colon_on && current_frame == 0));
 
   if (degree_pin)
-    degree_pin->digital_write(degree_on && current_frame == 0);
+    degree_pin->digital_write(common_vcc^(degree_on && current_frame == 0));
 
   cycles_to_skip = intensity_delay + (compensate_brightness ? bit_count : 0);
 }
@@ -274,6 +274,11 @@ void LcdDigitsComponent::set_writer(lcd_digits_writer_t &&writer) {
   ESP_LOGV(TAG, "Setting up writer");
   assert(timer == nullptr);
   writer_ = std::move(writer);
+}
+void LcdDigitsComponent::set_common_vcc(bool arg) {
+  ESP_LOGV(TAG, "set display is common vcc: %d", arg);
+  InterruptLock lock;
+  interrupt_data_.common_vcc = arg;
 }
 void LcdDigitsComponent::set_compensate_brightness(bool arg) {
   ESP_LOGV(TAG, "Setting up brightness to %d", arg);

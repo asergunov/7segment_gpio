@@ -49,6 +49,7 @@ struct LcdDigitsData : LcdData {
    * @brief Increase on time proptional to lighting items
    * Usable if you have resistros on digit pins and swithcing the digits
    */
+  bool common_vcc = false;
   bool compensate_brightness = false;
 
   /**
@@ -80,6 +81,7 @@ public:
   void set_segment_pins(std::vector<GPIOPin *> segment_pins);
   void set_digit_pins(std::vector<GPIOPin *> digit_pins);
   void set_writer(lcd_digits_writer_t &&writer);
+  void set_common_vcc(bool arg);
   void set_compensate_brightness(bool arg);
   void set_iterate_digits(bool arg);
   void set_intensity(uint8_t arg);
