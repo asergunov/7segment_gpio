@@ -39,7 +39,7 @@ struct LcdData {
 };
 
 struct LcdDigitsData : LcdData {
-  std::vector<GPIOPin *> digit_pins;
+  std::vector<GPIOPin *> digit_pins = {nullptr};
   std::vector<GPIOPin *> segment_pins;
   GPIOPin *colon_pin = nullptr;
   GPIOPin *degree_pin = nullptr;

@@ -23,7 +23,7 @@ CONFIG_SCHEMA = (
     display.BASIC_DISPLAY_SCHEMA.extend(
         {
             cv.GenerateID(): cv.declare_id(LcdDigitsComponent),
-            cv.Required(CONF_DIGIT_PINS): cv.ensure_list(
+            cv.Optional(CONF_DIGIT_PINS): cv.ensure_list(
                             pins.internal_gpio_input_pin_schema
                         ),
             cv.Required(CONF_SEGMENT_PINS): cv.ensure_list(
@@ -50,10 +50,11 @@ async def to_code(config):
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
     # cg.add(var.set_reverse(config[CONF_REVERSE_ENABLE]))
 
-    digit_pins = []
-    for pin_config in config[CONF_DIGIT_PINS]:
-        digit_pins.append(await cg.gpio_pin_expression(pin_config))
-    cg.add(var.set_digit_pins(digit_pins))
+    if CONF_DIGIT_PINS in config:
+        digit_pins = []
+        for pin_config in config[CONF_DIGIT_PINS]:
+            digit_pins.append(await cg.gpio_pin_expression(pin_config))
+        cg.add(var.set_digit_pins(digit_pins))
 
     segment_pins = []
     for pin_config in config[CONF_SEGMENT_PINS]:

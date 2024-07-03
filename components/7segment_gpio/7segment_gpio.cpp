@@ -200,7 +200,8 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
   if (iterate_digits) {
 
     // turn off digit
-    digit_pins[current_frame]->digital_write(true);
+    if(auto digit_pin = digit_pins[current_frame])
+      digit_pin->digital_write(true);
 
     // switch to hext digit
     current_frame = (current_frame + 1) % digit_pins.size();
@@ -213,8 +214,8 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
       segment_pin->digital_write(segment_on);
     }
 
-    //
-    digit_pins[current_frame]->digital_write(false);
+    if(auto digit_pin = digit_pins[current_frame])
+      digit_pin->digital_write(false);
   } else {
     segment_pins[current_frame]->digital_write(false);
 
@@ -225,7 +226,8 @@ void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
     for (const auto &digit_pin : digit_pins) {
       const bool digit_on = (*raw_digit) & (0x01 << current_frame);
       bit_count += digit_on ? 1 : 0;
-      digit_pin->digital_write(!digit_on);
+      if(digit_pin)
+        digit_pin->digital_write(!digit_on);
       raw_digit++;
     }
     segment_pins[current_frame]->digital_write(true);
@@ -292,7 +294,9 @@ void LcdDigitsComponent::set_intensity(uint8_t arg) {
 void LcdDigitsComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "LCD Digits:");
   for (auto *pin : interrupt_data_.digit_pins) {
-    LOG_PIN("  Digit Pin: ", pin);
+    if(pin) {
+      LOG_PIN("  Digit Pin: ", pin);
+    }
   }
   for (auto *pin : interrupt_data_.segment_pins) {
     LOG_PIN("  Segment Pin: ", pin);
@@ -349,12 +353,13 @@ void LcdDigitsComponent::set_progress(float progress) {
   
   // off all digits
   for(auto* pin: interrupt_data_.digit_pins)
-    pin->digital_write(true);
+    if(pin) pin->digital_write(true);
   // off all segments
   for(auto* pin: interrupt_data_.segment_pins)
     pin->digital_write(false);
   interrupt_data_.segment_pins[current_segment]->digital_write(true);
-  interrupt_data_.digit_pins[current_digit]->digital_write(false);
+  if(auto pin = interrupt_data_.digit_pins[current_digit])
+    pin->digital_write(false);
 }
 
 void LcdDigitsComponent::strftime(uint8_t pos, const char *format,
@@ -376,8 +381,11 @@ void LcdDigitsComponent::setup() {
     pin->digital_write(initial);
   };
 
-  for (const auto &pin : interrupt_data_.digit_pins)
-    setup_output_pin(pin, true);
+  for (const auto &pin : interrupt_data_.digit_pins) {
+    if(pin) {
+      setup_output_pin(pin, true);
+    }
+  }
 
   for (const auto &pin : interrupt_data_.segment_pins)
     setup_output_pin(pin, false);

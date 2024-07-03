@@ -4,7 +4,7 @@ This component let you connect 7-segment display directly to controller using ju
 
 # Features
 ## 1 to 8 digits support
-Just list as many `digit_pins` as you have.
+Just list as many `digit_pins` as you have. If you have just one digit feel free connect pin to power rail and don't specify this value.
 
 ## Resistors on segment or digit side
 Usually driver is turning on whole digit one by one so you need resistors for each segment pin to have the same brightness. So 8 of them.
