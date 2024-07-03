@@ -14,6 +14,7 @@ LcdDigitsComponentRef = LcdDigitsComponent.operator("ref")
 # CONF_REVERSE_ENABLE = "reverse_enable"
 CONF_DIGIT_PINS = "digit_pins"
 CONF_SEGMENT_PINS = "segment_pins"
+CONF_ISCOMMONVCC = "common_positive"
 CONF_ITERATE_DIGITS = "iterate_digits"
 CONF_COMPENSATE_BRIGHTNESS = "compensate_brightness"
 CONF_COLON_PIN = "colon_pin"
@@ -30,6 +31,7 @@ CONFIG_SCHEMA = (
                             gpio_output_pin_schema
                         ),
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
+            cv.Optional(CONF_ISCOMMONVCC, default=False): cv.boolean,
             cv.Optional(CONF_ITERATE_DIGITS, default=True): cv.boolean,
             cv.Optional(CONF_COMPENSATE_BRIGHTNESS, default=False): cv.boolean,
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
@@ -60,7 +62,7 @@ async def to_code(config):
     for pin_config in config[CONF_SEGMENT_PINS]:
         segment_pins.append(await cg.gpio_pin_expression(pin_config))
     cg.add(var.set_segment_pins(segment_pins))
-
+    cg.add(var.set_common_vcc(config[CONF_ISCOMMONVCC]))
     cg.add(var.set_iterate_digits(config[CONF_ITERATE_DIGITS]))
     cg.add(var.set_compensate_brightness(config[CONF_COMPENSATE_BRIGHTNESS]))
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
