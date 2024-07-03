@@ -24,17 +24,17 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(LcdDigitsComponent),
             cv.Optional(CONF_DIGIT_PINS): cv.ensure_list(
-                            pins.internal_gpio_input_pin_schema
+                            pins.gpio_output_pin_schema
                         ),
             cv.Required(CONF_SEGMENT_PINS): cv.ensure_list(
-                            pins.internal_gpio_input_pin_schema
+                            pins.gpio_output_pin_schema
                         ),
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
             cv.Optional(CONF_ITERATE_DIGITS, default=True): cv.boolean,
             cv.Optional(CONF_COMPENSATE_BRIGHTNESS, default=False): cv.boolean,
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
-            cv.Optional(CONF_COLON_PIN): pins.internal_gpio_input_pin_schema,
-            cv.Optional(CONF_DEGREE_PIN): pins.internal_gpio_input_pin_schema,
+            cv.Optional(CONF_COLON_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_DEGREE_PIN): pins.gpio_output_pin_schema,
         }
     )
     .extend(cv.polling_component_schema("1s"))
