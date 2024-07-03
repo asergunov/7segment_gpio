@@ -2,9 +2,9 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import display
 from esphome.const import CONF_ID, CONF_INTENSITY, CONF_LAMBDA
-
-from esphome import pins
+from esphome.pins import gpio_output_pin_schema
 from esphome.const import __version__ as ESPHOME_VERSION
+
 lcd_digits_ns = cg.esphome_ns.namespace("lcd_digits")
 LcdDigitsComponent = lcd_digits_ns.class_(
     "LcdDigitsComponent", cg.PollingComponent
@@ -24,17 +24,17 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(LcdDigitsComponent),
             cv.Optional(CONF_DIGIT_PINS): cv.ensure_list(
-                            pins.gpio_output_pin_schema
+                            gpio_output_pin_schema
                         ),
             cv.Required(CONF_SEGMENT_PINS): cv.ensure_list(
-                            pins.gpio_output_pin_schema
+                            gpio_output_pin_schema
                         ),
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
             cv.Optional(CONF_ITERATE_DIGITS, default=True): cv.boolean,
             cv.Optional(CONF_COMPENSATE_BRIGHTNESS, default=False): cv.boolean,
             cv.Optional(CONF_INTENSITY, default=15): cv.int_range(min=0, max=15),
-            cv.Optional(CONF_COLON_PIN): pins.gpio_output_pin_schema,
-            cv.Optional(CONF_DEGREE_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_COLON_PIN): gpio_output_pin_schema,
+            cv.Optional(CONF_DEGREE_PIN): gpio_output_pin_schema,
         }
     )
     .extend(cv.polling_component_schema("1s"))
