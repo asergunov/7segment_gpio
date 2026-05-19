@@ -180,13 +180,59 @@ constexpr uint8_t CYRILLIC_TO_RAW[] = {
     // UNKNOWN_CHAR, // `ё` 0x0451
 };
 
+
 LcdDigitsData *g_interrupt_data = nullptr;
+
+#if defined(ESP_ARDUINO_VERSION_MAJOR) && ESP_ARDUINO_VERSION_MAJOR >= 3
+constexpr uint32_t LCD_DIGITS_TIMER_FREQUENCY_HZ = 1000000;  // 1 tick = 1 us
+
+static inline hw_timer_t *lcd_digits_timer_begin() {
+  return timerBegin(LCD_DIGITS_TIMER_FREQUENCY_HZ);
+}
+
+static inline void lcd_digits_timer_attach_interrupt(hw_timer_t *timer, void (*isr)()) {
+  timerAttachInterrupt(timer, isr);
+}
+
+static inline void lcd_digits_timer_set_alarm(hw_timer_t *timer, uint64_t alarm_us) {
+  timerAlarm(timer, alarm_us, true, 0);
+}
+
+static inline void lcd_digits_timer_enable(hw_timer_t *timer) {
+  timerStart(timer);
+}
+
+static inline void lcd_digits_timer_disable(hw_timer_t *timer) {
+  timerStop(timer);
+}
+#else
+static inline hw_timer_t *lcd_digits_timer_begin() {
+  return timerBegin(0, 80, true);
+}
+
+static inline void lcd_digits_timer_attach_interrupt(hw_timer_t *timer, void (*isr)()) {
+  timerAttachInterrupt(timer, isr, true);
+}
+
+static inline void lcd_digits_timer_set_alarm(hw_timer_t *timer, uint64_t alarm_us) {
+  timerAlarmWrite(timer, alarm_us, true);
+}
+
+static inline void lcd_digits_timer_enable(hw_timer_t *timer) {
+  timerAlarmEnable(timer);
+}
+
+static inline void lcd_digits_timer_disable(hw_timer_t *timer) {
+  timerAlarmDisable(timer);
+}
+#endif
+
 static void IRAM_ATTR HOT s_timer_intr() {
   g_interrupt_data->timer_interrupt();
 }
 } // namespace
 
-void IRAM_ATTR HOT LcdDigitsData::timer_interrupt() {
+void IRAM_ATTR LcdDigitsData::timer_interrupt() {
   if (cycles_to_skip > 0) {
     cycles_to_skip--;
     return;
@@ -350,12 +396,18 @@ void LcdDigitsComponent::set_mode(LcdDigitsComponent::Mode mode) {
   if (mode_ == mode)
     return;
 
+  if (timer == nullptr) {
+    mode_ = mode;
+    return;
+  }
+
   switch (mode) {
   case BufferMode:
-    timerAlarmEnable(timer);
+    lcd_digits_timer_enable(timer);
     break;
   case ProgressMode:
-    timerAlarmDisable(timer);
+  case DisabledMode:
+    lcd_digits_timer_disable(timer);
     break;
   }
   mode_ = mode;
@@ -433,14 +485,14 @@ void LcdDigitsComponent::setup() {
 
   // see https://esphome.io/api/ac__dimmer_8cpp_source
   assert(timer == nullptr);
-  timer = timerBegin(0, 80, true);
+  timer = lcd_digits_timer_begin();
   if (timer) {
-    timerAttachInterrupt(timer, &s_timer_intr, true);
+    lcd_digits_timer_attach_interrupt(timer, &s_timer_intr);
     // For ESP32, we can't use dynamic interval calculation because the timerX
     // functions are not callable from ISR (placed in flash storage). Here we
     // just use an interrupt firing every 50 µs.
-    timerAlarmWrite(timer, 50, true);
-    timerAlarmEnable(timer);
+    lcd_digits_timer_set_alarm(timer, 50);
+    lcd_digits_timer_enable(timer);
   } else {
     ESP_LOGE(TAG, "Can't initialize timer");
   }
