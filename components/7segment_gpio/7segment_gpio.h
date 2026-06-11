@@ -23,6 +23,9 @@
 
 #ifdef USE_ESP32_FRAMEWORK_ARDUINO
 #include <esp32-hal-timer.h>
+#if __has_include(<esp_arduino_version.h>)
+#include <esp_arduino_version.h>
+#endif
 #endif
 
 namespace esphome {
@@ -67,7 +70,7 @@ struct LcdDigitsData : LcdData {
 
   uint8_t intensity_delay = 0;
 
-  void IRAM_ATTR HOT timer_interrupt();
+  void timer_interrupt();
 };
 
 //   a
